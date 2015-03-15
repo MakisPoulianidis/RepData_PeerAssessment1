@@ -1,4 +1,9 @@
-# Reproducible Research: Peer Assessment 1
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+html_document:
+keep_md: true
+---
 
 
 ## Loading and preprocessing the data
@@ -16,22 +21,6 @@ First, call libraries dplyr & lubridate
 
 ```r
 library(dplyr)
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-## 
-## The following object is masked from 'package:stats':
-## 
-##     filter
-## 
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-```r
 library(lubridate)
 library(ggplot2)
 ```
@@ -54,7 +43,7 @@ Create the histogram
 hist(sum.of.steps$Sum.Of.Steps, col="blue",xlim=c(0,25000), main = "Histogram of steps per day", xlab="total number of steps per day")
 ```
 
-![](./PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
 
 
 ##### 2. Calculate and report the mean and median total number of steps taken per day
@@ -96,7 +85,7 @@ Next create the time-series plot.
 plot(type="l",sum.of.steps.int$interval,sum.of.steps.int$Sum.Of.Steps, xlab="5-minute interval", ylab="Avg number of steps taken", main="Avg number of steps per 5-minute interval" )   
 ```
 
-![](./PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
 
 
 ##### 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
@@ -168,10 +157,9 @@ Create the histogram
 hist(sum.of.steps.imputed$Sum.Of.Steps, col="red",xlim=c(0,25000), main = "Histogram of steps per day with imputed values", xlab="total number of steps per day")
 ```
 
-![](./PA1_template_files/figure-html/unnamed-chunk-13-1.png) 
+![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13-1.png) 
 
 ##### Calculate and report the mean and median total number of steps taken per day
-
 
 Calculating the mean number of total steps per day...
 
@@ -217,11 +205,41 @@ ggplot(sum.of.steps.merged, aes(x=Date,y=Sum.Of.Steps, fill=imputed.values))+geo
 ## Warning: Removed 8 rows containing missing values (position_stack).
 ```
 
-![](./PA1_template_files/figure-html/unnamed-chunk-17-1.png) 
+![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-1.png) 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-
 ##### 1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
 
-##### 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
+Set the locale to English to get english day names
+
+```r
+Sys.setlocale("LC_TIME", "C")
+```
+
+```
+## [1] "C"
+```
+
+add a datetype column to the dataset
+* use sprintf and paste create a valid time
+* use paste to concatenate the date and time 
+* convert this concatenated string to a timestamp
+* use wday to get the daynumber (1 = Sunday, 7 = Saturday!)
+
+
+```r
+mutate(activity.imputed, daytype = 
+wday(strptime(paste(activity.imputed$date, paste(substr(sprintf("%04s",activity.imputed$interval), 1, 2),":",substr(sprintf("%04s",activity.imputed$interval), 3, 4), sep="")), format ="%Y-%m-%d %H:%M")))
+```
+
+create a small dataframe with weekend/weekday:
+
+```r
+daynum<-(1:7)
+daytype<-c("weekend","weekday","weekday","weekday","weekday","weekday","weekend")
+dayframe<-data.frame(daynum,daytype)
+```
+
+
+   ##### 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 

@@ -1,8 +1,8 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
 output: 
-  html_document:
-    keep_md: true
+html_document:
+keep_md: true
 ---
 
 
@@ -124,7 +124,6 @@ hist(sum.of.steps.imputed$Sum.Of.Steps, col="red",xlim=c(0,25000), main = "Histo
 
 ##### Calculate and report the mean and median total number of steps taken per day
 
-
 Calculating the mean number of total steps per day...
 ```{r}
 mean.steps.imputed<-mean(sum.of.steps.imputed$Sum.Of.Steps, na.rm=TRUE)
@@ -155,7 +154,42 @@ ggplot(sum.of.steps.merged, aes(x=Date,y=Sum.Of.Steps, fill=imputed.values))+geo
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-
 ##### 1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
+
+Set the locale to English to get english day names
+```{r}
+Sys.setlocale("LC_TIME", "C")
+```
+
+add a datetype column to the dataset  
+* use sprintf, substr and paste to create a valid time  
+* use paste to concatenate the date and time  
+* convert this concatenated string to a timestamp  
+* use wday to get the daynumber (1 = Sunday, 7 = Saturday!)  
+
+```{r, results='hide'}
+activity.imputed$daynum <- wday(strptime(paste(activity.imputed$date, paste(substr(sprintf("%04s",activity.imputed$interval), 1, 2),":",substr(sprintf("%04s",activity.imputed$interval), 3, 4), sep="")), format ="%Y-%m-%d %H:%M"))
+```
+
+create a small dataframe with weekend/weekday:
+```{r}
+daynum<-(1:7)
+daytype<-c("weekend","weekday","weekday","weekday","weekday","weekday","weekend")
+dayframe<-data.frame(daynum,daytype)
+```
+
+Join the dataframes
+```{r, results='hide'}
+activity.daytype<-left_join(activity.imputed,dayframe, by = "daynum")
+```
+
+A factor variable *"daytype"* has been added to the dataset
+```{r}
+str(activity.daytype)
+head(activity.daytype[activity.daytype$daynum==1,],n=2)
+head(activity.daytype[activity.daytype$daynum==2,],n=2)
+head(activity.daytype[activity.daytype$daynum==6,],n=2)
+head(activity.daytype[activity.daytype$daynum==7,],n=2)
+```
 
 ##### 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
