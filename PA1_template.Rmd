@@ -16,7 +16,7 @@ activity <- read.csv("activity.csv")
 
 ##### 2. Process/transform the data (if necessary) into a format suitable for your analysis 
 
-First, call libraries dplyr & lubridate
+First, call libraries dplyr, ggplot2 & lubridate
 ```{r}
 library(dplyr)
 library(lubridate)
@@ -148,7 +148,7 @@ sum.of.steps.merged<-bind_rows(mutate(sum.of.steps,imputed.values=FALSE),mutate(
 
 Next plot the two datasets (...and ingnore the warning). 
 The plot demonstrates that imputing missing values does not appear to affect the *total nbr of steps per day* if values were present in the original dataset. It also demonstrates that imputing added values on specific dates. 
-```{r}
+```{r, warning=FALSE}
 ggplot(sum.of.steps.merged, aes(x=Date,y=Sum.Of.Steps, fill=imputed.values))+geom_bar(stat="identity") + facet_grid(imputed.values~.) + scale_fill_brewer(palette="Set1") + ggtitle ("Total nbr of steps per day - with and without computed values") + scale_x_discrete(breaks=NULL)
 ```
 
@@ -193,3 +193,15 @@ head(activity.daytype[activity.daytype$daynum==7,],n=2)
 ```
 
 ##### 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
+
+Calculate the total number of steps per 5-minute interval divided by the distinct number of days and set readable column names.
+```{r}
+sum.of.steps.daytype<-summarise(group_by(activity.daytype,daytype,interval),"Avg.Of.Steps"=sum(steps, na.rm=TRUE)/n_distinct(date))
+```
+
+Finally, create the time-series panel plot.
+```{r, warning=FALSE}
+ggplot(sum.of.steps.daytype, aes(x=interval,y=Avg.Of.Steps, colour=daytype))+geom_line() + facet_grid(daytype~.)  + ggtitle ("Average nbr of steps per 5-minute interval") + scale_y_continuous(name="Average Number of Steps") + scale_x_continuous(name="5-Minute Interval")
+```
+
+
