@@ -203,29 +203,6 @@ dayframe&lt;-data.frame(daynum,daytype)</code></pre>
 <p>Join the dataframes</p>
 <pre class="r"><code>activity.daytype&lt;-left_join(activity.imputed,dayframe, by = &quot;daynum&quot;)</code></pre>
 <p>A factor variable <em>“daytype”</em> has been added to the dataset</p>
-<pre class="r"><code>str(activity.daytype)</code></pre>
-<pre><code>## 'data.frame':    17568 obs. of  5 variables:
-##  $ steps   : num  1.717 0.3396 0.1321 0.1509 0.0755 ...
-##  $ date    : Factor w/ 61 levels &quot;2012-10-01&quot;,&quot;2012-10-02&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
-##  $ daynum  : num  2 2 2 2 2 2 2 2 2 2 ...
-##  $ daytype : Factor w/ 2 levels &quot;weekday&quot;,&quot;weekend&quot;: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
-<pre class="r"><code>head(activity.daytype[activity.daytype$daynum==1,],n=2)</code></pre>
-<pre><code>##      steps       date interval daynum daytype
-## 1729     0 2012-10-07        0      1 weekend
-## 1730     0 2012-10-07        5      1 weekend</code></pre>
-<pre class="r"><code>head(activity.daytype[activity.daytype$daynum==2,],n=2)</code></pre>
-<pre><code>##       steps       date interval daynum daytype
-## 1 1.7169811 2012-10-01        0      2 weekday
-## 2 0.3396226 2012-10-01        5      2 weekday</code></pre>
-<pre class="r"><code>head(activity.daytype[activity.daytype$daynum==6,],n=2)</code></pre>
-<pre><code>##      steps       date interval daynum daytype
-## 1153     0 2012-10-05        0      6 weekday
-## 1154     0 2012-10-05        5      6 weekday</code></pre>
-<pre class="r"><code>head(activity.daytype[activity.daytype$daynum==7,],n=2)</code></pre>
-<pre><code>##      steps       date interval daynum daytype
-## 1441     0 2012-10-06        0      7 weekend
-## 1442     0 2012-10-06        5      7 weekend</code></pre>
 </div>
 <div id="make-a-panel-plot-containing-a-time-series-plot-i.e.type-l-of-the-5-minute-interval-x-axis-and-the-average-number-of-steps-taken-averaged-across-all-weekday-days-or-weekend-days-y-axis." class="section level5">
 <h5>2. Make a panel plot containing a time series plot (i.e. type = “l”) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).</h5>

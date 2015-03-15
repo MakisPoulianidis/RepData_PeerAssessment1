@@ -184,13 +184,6 @@ activity.daytype<-left_join(activity.imputed,dayframe, by = "daynum")
 ```
 
 A factor variable *"daytype"* has been added to the dataset
-```{r}
-str(activity.daytype)
-head(activity.daytype[activity.daytype$daynum==1,],n=2)
-head(activity.daytype[activity.daytype$daynum==2,],n=2)
-head(activity.daytype[activity.daytype$daynum==6,],n=2)
-head(activity.daytype[activity.daytype$daynum==7,],n=2)
-```
 
 ##### 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
 
