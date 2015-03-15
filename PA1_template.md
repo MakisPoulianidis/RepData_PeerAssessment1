@@ -236,7 +236,7 @@ daytype<-c("weekend","weekday","weekday","weekday","weekday","weekday","weekend"
 dayframe<-data.frame(daynum,daytype)
 ```
 
-Join the dataframes
+Join the dataframes and hide output
 
 ```r
 activity.daytype<-left_join(activity.imputed,dayframe, by = "daynum")
@@ -259,5 +259,3 @@ ggplot(sum.of.steps.daytype, aes(x=interval,y=Avg.Of.Steps, colour=daytype))+geo
 ```
 
 ![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23-1.png) 
-
-

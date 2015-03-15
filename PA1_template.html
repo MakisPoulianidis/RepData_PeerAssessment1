@@ -412,7 +412,7 @@ daytype&lt;-c(&quot;weekend&quot;,&quot;weekday&quot;,&quot;weekday&quot;,&quot;
 dayframe&lt;-data.frame(daynum,daytype)
 </code></pre>
 
-<p>Join the dataframes</p>
+<p>Join the dataframes and hide output</p>
 
 <pre><code class="r">activity.daytype&lt;-left_join(activity.imputed,dayframe, by = &quot;daynum&quot;)
 </code></pre>
