@@ -178,7 +178,7 @@ daytype<-c("weekend","weekday","weekday","weekday","weekday","weekday","weekend"
 dayframe<-data.frame(daynum,daytype)
 ```
 
-Join the dataframes
+Join the dataframes and hide output
 ```{r, results='hide'}
 activity.daytype<-left_join(activity.imputed,dayframe, by = "daynum")
 ```
