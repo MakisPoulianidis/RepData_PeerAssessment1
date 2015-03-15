@@ -15,7 +15,7 @@ activity <- read.csv("activity.csv")
 First, call libraries dplyr & lubridate
 
 ```r
-library("dplyr")
+library(dplyr)
 ```
 
 ```
@@ -32,7 +32,8 @@ library("dplyr")
 ```
 
 ```r
-library("lubridate")
+library(lubridate)
+library(ggplot2)
 ```
 *At this point, no further processing/transforming is needed.*
 
@@ -195,12 +196,28 @@ print(median.steps.imputed)
 
 
 ##### Do these values differ from the estimates from the first part of the assignment?
-
-
+The mean value remains the same, the median value increases slightly.
 
 ##### What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
+In order tot visualize the impact, first merge the dataframes with- and without the imputed values:
 
+```r
+sum.of.steps.merged<-bind_rows(mutate(sum.of.steps,imputed.values=FALSE),mutate(sum.of.steps.imputed,imputed.values=TRUE))
+```
+
+Next plot the two datasets (...and ingnore the warning). 
+The plot demonstrates that imputing missing values does not appear to affect the *total nbr of steps per day* if values were present in the original dataset. It also demonstrates that imputing added values on specific dates. 
+
+```r
+ggplot(sum.of.steps.merged, aes(x=Date,y=Sum.Of.Steps, fill=imputed.values))+geom_bar(stat="identity") + facet_grid(imputed.values~.) + scale_fill_brewer(palette="Set1") + ggtitle ("Total nbr of steps per day - with and without computed values") + scale_x_discrete(breaks=NULL)
+```
+
+```
+## Warning: Removed 8 rows containing missing values (position_stack).
+```
+
+![](./PA1_template_files/figure-html/unnamed-chunk-17-1.png) 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
